@@ -12,7 +12,6 @@ enum class NUMBERS {
 
 
 fun toNumberChar(input: String): Char {
-    input.println()
     if (input.first().isDigit()) return input.first()
 
     return (NUMBERS.valueOf(input.uppercase()).ordinal + 1).digitToChar()
