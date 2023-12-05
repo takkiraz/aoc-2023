@@ -1,12 +1,11 @@
 import kotlin.math.pow
+import kotlin.time.measureTime
 
 fun main() {
     fun part1(input: List<String>): Long {
         return input.sumOf {
             val (winning, numbers) = it.split(": ")[1].split(" | ")
                 .map { it.chunked(3).map { it.replace(" ", "").toLong() } }
-            winning.println()
-            numbers.println()
             winning.sumOf { numbers.groupingBy { it }.eachCount().get(it) ?: 0 }.let {
                 if (it > 1) (2.toDouble().pow(it - 1) * 1).toLong() else it.toLong()
             }
@@ -35,12 +34,16 @@ fun main() {
     }
 
     readInput("Day04_test").let {
-        check(part1(it) == 13L)
-        check(part2(it) == 30L)
+        measureTime {
+            check(part1(it) == 13L)
+        }.println()
+        measureTime {
+            check(part2(it) == 30L)
+        }.println()
     }
 
     readInput("Day04").let {
-        part1(it).println()
-        part2(it).println()
+        measureTime { part1(it).println() }.println()
+        measureTime { part2(it).println() }.println()
     }
 }
