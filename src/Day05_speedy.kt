@@ -41,7 +41,28 @@ fun main() {
     }
 
     fun part2(input: List<String>): Long {
-        return 0
+        val (seedsText) = input
+        val mapsText = input.drop(1)
+        val seeds = seedsText.split(": ")[1].split(" ").map { it.toLong() }.chunked(2).flatMap {
+            LongRange(it[0], it[0] + it[1] - 1).toList()
+        }.distinct()
+        seeds.println()
+        seeds.size.println()
+        val maps = mapsText.map { s ->
+            s.split("\\r\\n|\\n|\\r".toRegex()).drop(1).map {
+                val (destStart, sourceStart, length) =  it.split(" ").map { it.toLong() }
+                Triple(destStart, sourceStart, length)
+            }
+        }
+
+        seeds.println()
+        maps.println()
+        val paths = seeds.associateWith {
+            maps.createSeedPath2(it)
+        }
+        paths.println()
+
+        return paths.values.minOf { it.last() }
     }
 
     readInputSplitBy("Day05_test", "\\r\\n\\r\\n|\\n\\n|\\r\\r".toRegex()).let {
@@ -49,14 +70,14 @@ fun main() {
 //            check(part1(it) == 35L)
         }.println()
         measureTime {
-//            check(part2(it) == 30L)
+            check(part2(it) == 46L)
         }.println()
     }
 
 
 
     readInputSplitBy("Day05", "\\r\\n\\r\\n|\\n\\n|\\r\\r".toRegex()).let {
-        measureTime { part1(it).println() }.println()
-//        measureTime { part2(it).println() }.println()
+//        measureTime { part1(it).println() }.println()
+        measureTime { part2(it).println() }.println()
     }
 }
